@@ -1,0 +1,31 @@
+<%
+  # use a database with the same name as the branch, if the branch is not master:
+  db_name = 'cg-remoteassets'
+  db_user = 'crabgrass'
+  db_pass = 'test'
+%>
+
+development:
+  encoding: utf8
+  adapter: mysql
+  database: <%=db_name%>_development
+  username: <%=db_user%> 
+  password: <%=db_pass%>
+  host: localhost
+
+test:
+  encoding: utf8
+  adapter: mysql
+  database: <%=db_name%>_test
+  username: <%=db_user%>
+  password: <%=db_pass%>
+  host: localhost
+
+production:
+  encoding: utf8
+  adapter: mysql
+  database: <%=db_name%>_development
+  username: <%=db_user%>
+  password: <%=db_pass%>
+  host: localhost
+
