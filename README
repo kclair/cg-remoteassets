@@ -1,2 +1,3 @@
 This is a rails app for testing the use of ActiveResource to post binary data to an external api in json format.
-This is meant to be tested with the cg-processor app (as the listening server)
+This is meant to be tested with the cg-processor app (as the listening server):
+https://github.com/kclair/cg-processor
