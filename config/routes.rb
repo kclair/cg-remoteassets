@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :assets
+  # this should make /assets/1/source possible
+  map.resources :assets 
+  map.resources :sources
 
   # The priority is based upon order of creation: first created -> highest priority.
 

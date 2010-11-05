@@ -9,6 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20101105184318) do
+
+  create_table "assets", :force => true do |t|
+    t.string   "mime_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "remote_id"
+  end
+
+  create_table "sources", :force => true do |t|
+    t.string   "filename"
+    t.string   "size"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "asset_id"
+  end
 
 end
