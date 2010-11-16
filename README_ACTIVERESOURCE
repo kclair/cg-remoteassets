@@ -1,0 +1,29 @@
+See https://rails.lighthouseapp.com/projects/8994/tickets/5867-activeresource-is-not-parsing-json-correct
+In order for ActiveResource to properly decode json in version 2.3.10, the following patch needs to be applied:
+
+diff --git a/activeresource/lib/active_resource/formats/json_format.rb b/activeresource/lib/active_resource/formats/json_format.rb
+index 9980634..6a06483 100644
+--- a/activeresource/lib/active_resource/formats/json_format.rb
++++ b/activeresource/lib/active_resource/formats/json_format.rb
+@@ -18,8 +18,22 @@ module ActiveResource
+       end
+ 
+       def decode(json)
+-        ActiveSupport::JSON.decode(json)
++        decoded_json = ActiveSupport::JSON.decode(json)
++        if decoded_json.is_a?(Array)
++          decoded_json.map! { |e| from_json_data(e) }
++        else
++          from_json_data(decoded_json)
++        end
+       end
++
++      private
++        def from_json_data(data)
++          if data.is_a?(Hash) && data.keys.size == 1
++            data.values.first
++          else
++            data
++          end
++        end
+
