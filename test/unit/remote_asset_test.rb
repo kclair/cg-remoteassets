@@ -11,7 +11,7 @@ class RemoteAssetTest < ActiveSupport::TestCase
     @asset = assets(:one)
     @source = @asset.sources.find(1)
     # if i were a functional test i could call a controller that uses source_url but i'm not a functional controller
-    url = "http://localhost:3000/source/#{@source.id}"
+    url = "http://localhost:3000/sources/#{@source.id}"
     remote = RemoteAsset.create(:mime_from => @asset.mime_type, :filename => @source.filename, :source_url => url)
     assert_not_nil remote
 
@@ -23,7 +23,7 @@ class RemoteAssetTest < ActiveSupport::TestCase
   def test_remote_asset_queued
     @asset = assets(:one)
     @source = @asset.sources.find(1)
-    url = "http://localhost:3000/source/#{@source.id}"
+    url = "http://localhost:3000/sources/#{@source.id}"
     remote = RemoteAsset.create(:mime_from => @asset.mime_type, :filename => @source.filename, :source_url => url)
     assert_not_nil remote
     remote.reload
@@ -32,7 +32,7 @@ class RemoteAssetTest < ActiveSupport::TestCase
 
   def test_remote_asset_invalid_source
     @asset = assets(:one)
-    remote = RemoteAsset.create(:mime_from => @asset.mime_type, :filename => 'foo', :source_url => 'http://foobar')
+    remote = RemoteAsset.create(:mime_from => @asset.mime_type, :filename => 'foo', :source_url => 'foobar')
     assert_not_nil remote
     count = 0
     until count == 30
@@ -47,14 +47,14 @@ class RemoteAssetTest < ActiveSupport::TestCase
   def test_remote_asset_processed
     @asset = assets(:one)
     @source = @asset.sources.find(1)
-    url = "http://localhost:3000/source/#{@source.id}"
+    url = "http://localhost:3000/sources/#{@source.id}"
     remote = RemoteAsset.create(:mime_from => @asset.mime_type, :filename => @source.filename, :source_url => url)
     assert_not_nil remote
     # give it 30 seconds to finish
     count = 0
-    until count == 30
+    until count == 15 
       remote.reload
-      break if remote.status == 'succeeded'
+      break if remote.status == 'succeeded' or remote.status == 'failed'
       count = count+1
       sleep 1
     end
